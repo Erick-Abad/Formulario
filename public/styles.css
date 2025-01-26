@@ -10,7 +10,6 @@ body {
     margin: 0;
     color: #fff;
     padding: 20px;
-    box-sizing: border-box;
 }
 
 .container {
@@ -49,7 +48,6 @@ input {
     color: #fff;
     transition: 0.3s ease-in-out;
     text-align: center;
-    outline: none;
 }
 
 .btn {
@@ -63,10 +61,15 @@ input {
     font-weight: bold;
     width: 100%;
     transition: 0.3s;
-    margin-bottom: 15px;
 }
 
 .btn:hover {
     background: #00d674;
 }
 
+/* Responsividad */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+}
