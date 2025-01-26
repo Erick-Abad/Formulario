@@ -1,15 +1,13 @@
 {
   "name": "formulario",
   "version": "1.0.0",
-  "description": "Formulario con Node.js y Express",
-  "main": "server.js",
+  "description": "Formulario con Node.js en Vercel",
+  "main": "api/submit-form.js",
   "scripts": {
-    "start": "node server/server.js"
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "nodemailer": "^6.9.1",
-    "cors": "^2.8.5"
+    "resend": "^1.0.0"
   }
 }
