@@ -9,7 +9,7 @@ document.getElementById('inscripcionForm').addEventListener('submit', function(e
         return;
     }
 
-    fetch('/api/submit-form', {  // Cambiado para que funcione en Vercel
+    fetch('/api/submit-form', {  // URL corregida para Vercel
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre, correo })
