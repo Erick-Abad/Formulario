@@ -61,11 +61,36 @@ input {
     font-weight: bold;
     width: 100%;
     transition: 0.3s;
+    margin-bottom: 15px;
 }
 
 .btn:hover {
     background: #00d674;
 }
+
+/* Estilo para el botón de WhatsApp */
+.whatsapp-link {
+    display: block;
+    text-align: center;
+    background: #00ff87;
+    color: #0a192f;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    text-decoration: none;
+    transition: 0.3s;
+    margin-top: 15px;
+    box-sizing: border-box;
+}
+
+.whatsapp-link:hover {
+    background: #00d674;
+}
+
 
 /* Responsividad */
 @media (max-width: 768px) {
