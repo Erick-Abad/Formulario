@@ -7,14 +7,15 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Habilitar CORS
+// Habilitar CORS y JSON
 app.use(cors());
 app.use(express.json());
+
+// Servir archivos estáticos
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.post('/submit-form', async (req, res) => {
     const { nombre, correo } = req.body;
-    console.log("Datos recibidos:", nombre, correo);
 
     if (!nombre || !correo) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
@@ -27,7 +28,7 @@ app.post('/submit-form', async (req, res) => {
             pass: process.env.EMAIL_PASS
         },
         tls: {
-            rejectUnauthorized: false // Solución para error de certificados autofirmados
+            rejectUnauthorized: false 
         }
     });
 
@@ -40,11 +41,10 @@ app.post('/submit-form', async (req, res) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log("Correo enviado exitosamente");
         res.status(200).json({ message: 'Correo enviado con éxito' });
     } catch (error) {
         console.error("Error al enviar correo:", error);
-        res.status(500).json({ error: 'Error interno en el servidor' });
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
 
