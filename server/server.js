@@ -14,7 +14,7 @@ app.use(express.json());
 // Servir archivos estáticos desde la raíz
 app.use(express.static(path.join(__dirname, '../')));
 
-// Ruta para servir el formulario
+// Ruta principal
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
@@ -52,5 +52,4 @@ app.post('/submit-form', async (req, res) => {
     }
 });
 
-// Exportar el servidor para Vercel
 module.exports = app;
