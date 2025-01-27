@@ -2,14 +2,17 @@
   "name": "formulario",
   "version": "1.0.0",
   "description": "Formulario con Node.js y Express",
-  "main": "api/send-email.js",
   "scripts": {
-    "start": "node api/send-email.js"
+    "start": "node api/send-email.js",
+    "vercel-build": "echo 'Ready for deployment'"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "nodemailer": "^6.9.1",
     "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
