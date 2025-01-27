@@ -24,14 +24,6 @@ body {
     box-sizing: border-box;
 }
 
-h2 {
-    color: #00ff87;
-    font-size: 26px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-}
-
 .input-group {
     margin-bottom: 15px;
 }
@@ -52,14 +44,8 @@ input {
     color: #0a192f;
     border: none;
     padding: 15px;
-    cursor: pointer;
     border-radius: 25px;
     font-size: 18px;
     font-weight: bold;
     width: 100%;
-    transition: 0.3s;
-}
-
-.btn:hover {
-    background: #00d674;
 }

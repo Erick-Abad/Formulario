@@ -16,7 +16,7 @@ document.getElementById('inscripcionForm').addEventListener('submit', function(e
         return;
     }
 
-    fetch('/api/send-email', {  // Ruta corregida para Vercel
+    fetch('/api/send-email', {  // Cambié la ruta a la función de Vercel
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre, correo })
