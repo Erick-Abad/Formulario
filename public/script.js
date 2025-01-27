@@ -16,7 +16,7 @@ document.getElementById('inscripcionForm').addEventListener('submit', function(e
         return;
     }
 
-    fetch('http://localhost:3000/submit-form', {
+    fetch(`${window.location.origin}/submit-form`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre, correo })
