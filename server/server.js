@@ -44,7 +44,7 @@ app.post('/submit-form', async (req, res) => {
         res.status(200).json({ message: 'Correo enviado con éxito' });
     } catch (error) {
         console.error("Error al enviar correo:", error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        res.status(500).json({ error: 'Error interno del servidor, inténtalo más tarde.' });
     }
 });
 
