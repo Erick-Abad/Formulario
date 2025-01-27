@@ -13,7 +13,11 @@
     "routes": [
       {
         "src": "/api/(.*)",
-        "dest": "/api/send-email.js"
+        "dest": "api/send-email.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/public/index.html"
       }
     ]
   }
