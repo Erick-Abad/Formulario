@@ -11,15 +11,15 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Servir archivos estáticos
-app.use(express.static(path.join(__dirname, '../public')));
+// Servir archivos estáticos desde la raíz
+app.use(express.static(path.join(__dirname, '../')));
 
-// Ruta principal
+// Ruta para servir el formulario
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-// Ruta de envío de formulario
+// Ruta para recibir el formulario
 app.post('/submit-form', async (req, res) => {
     const { nombre, correo } = req.body;
 
@@ -45,7 +45,6 @@ app.post('/submit-form', async (req, res) => {
         };
 
         await transporter.sendMail(mailOptions);
-        console.log('Correo enviado exitosamente');
         res.status(200).json({ message: 'Correo enviado con éxito' });
     } catch (error) {
         console.error('Error al enviar correo:', error);
