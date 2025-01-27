@@ -2,10 +2,9 @@
   "name": "formulario",
   "version": "1.0.0",
   "description": "Formulario con Node.js y Express",
-  "main": "server.js",
+  "main": "api/send-email.js",
   "scripts": {
-    "start": "node server/server.js"
-    
+    "start": "node api/send-email.js"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
