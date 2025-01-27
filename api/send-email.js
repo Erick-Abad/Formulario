@@ -13,9 +13,6 @@ module.exports = async (req, res) => {
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
-            },
-            tls: {
-                rejectUnauthorized: false
             }
         });
 
@@ -31,7 +28,7 @@ module.exports = async (req, res) => {
             return res.status(200).json({ message: 'Correo enviado con éxito' });
         } catch (error) {
             console.error("Error al enviar correo:", error);
-            return res.status(500).json({ error: 'Error interno del servidor, inténtalo más tarde.' });
+            return res.status(500).json({ error: 'Error interno del servidor' });
         }
     } else {
         res.status(405).json({ error: 'Método no permitido' });
