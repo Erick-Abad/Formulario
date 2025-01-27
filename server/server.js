@@ -5,12 +5,13 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Habilitar CORS y JSON
 app.use(cors());
 app.use(express.json());
 
-// Servir archivos estáticos desde public
+// Servir archivos estáticos
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.post('/submit-form', async (req, res) => {
@@ -47,4 +48,6 @@ app.post('/submit-form', async (req, res) => {
     }
 });
 
-module.exports = app;  // Exportar para Vercel
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
