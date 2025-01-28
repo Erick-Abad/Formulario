@@ -24,7 +24,7 @@ document.getElementById('inscripcionForm').addEventListener('submit', function(e
     .then(response => response.json())
     .then(data => {
         if (data.message) {
-            alert('¡Inscripción exitosa! Revisa tu correo.');
+            alert('¡Inscripción exitosa!Ingresa al grupo de whatsapp.');
             document.getElementById('inscripcionForm').reset();
         } else {
             alert('Hubo un problema, intenta nuevamente.');
