@@ -12,7 +12,6 @@ module.exports = async (req, res) => {
             return res.status(400).json({ error: "Todos los campos son obligatorios" });
         }
 
-        // Verificar variables de entorno
         if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.RECEIVER_EMAIL) {
             console.error("❌ Error: Variables de entorno faltantes en Vercel.");
             return res.status(500).json({ error: "Error en el servidor (ENV Missing)" });
@@ -25,7 +24,7 @@ module.exports = async (req, res) => {
                 pass: process.env.EMAIL_PASS,
             },
             tls: {
-                rejectUnauthorized: false, // Evita errores de certificados
+                rejectUnauthorized: false,
             },
         });
 
