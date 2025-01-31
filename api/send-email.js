@@ -1,80 +1,72 @@
 require('dotenv').config();
-const fs = require('fs');
-const PDFDocument = require('pdfkit');
 const nodemailer = require('nodemailer');
+const fs = require('fs');
+const pdf = require('pdfkit');
 
 module.exports = async (req, res) => {
     try {
-        if (req.method !== 'POST') {
-            return res.status(405).json({ error: 'Método no permitido' });
+        if (req.method !== "POST") {
+            return res.status(405).json({ error: "Método no permitido" });
         }
 
         const { nombre, apellidos, pais, ciudad, direccion, telefono } = req.body;
 
         if (!nombre || !apellidos || !pais || !ciudad || !direccion || !telefono) {
-            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+            return res.status(400).json({ error: "Todos los campos son obligatorios" });
         }
 
-        // Crear el PDF con los datos
-        const pdfPath = `./inscripcion_${nombre}_${apellidos}.pdf`;
-        const doc = new PDFDocument();
-        doc.pipe(fs.createWriteStream(pdfPath));
+        // Verificar variables de entorno
+        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.RECEIVER_EMAIL) {
+            console.error("❌ Error: Variables de entorno faltantes en Vercel.");
+            return res.status(500).json({ error: "Error en el servidor (ENV Missing)" });
+        }
 
-        doc.fontSize(18).text('Confirmación de Inscripción', { align: 'center' });
-        doc.moveDown();
-        doc.fontSize(14).text(`Nombre: ${nombre}`);
-        doc.text(`Apellidos: ${apellidos}`);
-        doc.text(`País: ${pais}`);
-        doc.text(`Ciudad: ${ciudad}`);
-        doc.text(`Dirección: ${direccion}`);
-        doc.text(`Teléfono: ${telefono}`);
-        doc.moveDown();
-        doc.fontSize(12).text('¡Gracias por inscribirte!', { align: 'center' });
+        // 📄 **Crear PDF con la información del formulario**
+        const pdfDoc = new pdf();
+        const pdfFileName = `inscripcion_${nombre}_${apellidos}.pdf`;
+        const pdfFilePath = `/tmp/${pdfFileName}`; // Directorio temporal para Vercel
 
-        doc.end();
+        pdfDoc.pipe(fs.createWriteStream(pdfFilePath));
+        pdfDoc.fontSize(20).text("Inscripción al Curso", { align: "center" });
+        pdfDoc.moveDown();
+        pdfDoc.fontSize(14).text(`Nombre: ${nombre}`);
+        pdfDoc.text(`Apellidos: ${apellidos}`);
+        pdfDoc.text(`País: ${pais}`);
+        pdfDoc.text(`Ciudad: ${ciudad}`);
+        pdfDoc.text(`Dirección: ${direccion}`);
+        pdfDoc.text(`Teléfono: ${telefono}`);
+        pdfDoc.end();
 
-        // Configuración de Nodemailer
+        // 📧 **Configurar el correo con Nodemailer**
         const transporter = nodemailer.createTransport({
-            service: 'Gmail',
+            service: "Gmail",
             auth: {
                 user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
+                pass: process.env.EMAIL_PASS,
             },
-            tls: {
-                rejectUnauthorized: false
-            }
+            tls: { rejectUnauthorized: false }
         });
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: process.env.RECEIVER_EMAIL,
-            subject: 'Nueva Inscripción al Curso',
-            text: `
-                Nombre: ${nombre}
-                Apellidos: ${apellidos}
-                País: ${pais}
-                Ciudad: ${ciudad}
-                Dirección: ${direccion}
-                Teléfono: ${telefono}
-            `,
+            subject: "Nueva Inscripción al Curso",
+            text: `Nueva inscripción:\n\nNombre: ${nombre}\nApellidos: ${apellidos}\nPaís: ${pais}\nCiudad: ${ciudad}\nDirección: ${direccion}\nTeléfono: ${telefono}`,
             attachments: [
                 {
-                    filename: `Inscripción_${nombre}_${apellidos}.pdf`,
-                    path: pdfPath
+                    filename: pdfFileName,
+                    path: pdfFilePath,
+                    contentType: 'application/pdf'
                 }
             ]
         };
 
-        // Enviar el correo con el PDF adjunto
         await transporter.sendMail(mailOptions);
-        
-        // Eliminar el PDF después de enviarlo
-        fs.unlinkSync(pdfPath);
-
-        res.status(200).json({ message: 'Correo enviado con éxito con PDF adjunto' });
+        console.log("✅ Correo enviado correctamente");
+        return res.status(200).json({ message: "Correo enviado con éxito" });
 
     } catch (error) {
-        console.error('Error al enviar correo:', error);
-        res.status(500).json({ error: 'Error en el servidor' });
+        console.error("❌ Error en el servidor:", error);
+        return res.status(500).json({ error: "Error en el servidor" });
     }
 };
