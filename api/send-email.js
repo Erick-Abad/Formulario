@@ -12,13 +12,12 @@ module.exports = async (req, res) => {
             return res.status(400).json({ error: "Todos los campos son obligatorios" });
         }
 
-        // Verificar que las variables de entorno estén definidas
+        // Verificar variables de entorno
         if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.RECEIVER_EMAIL) {
-            console.error("Error: Faltan variables de entorno para el correo.");
-            return res.status(500).json({ error: "Error interno del servidor" });
+            console.error("❌ Error: Variables de entorno faltantes en Vercel.");
+            return res.status(500).json({ error: "Error en el servidor (ENV Missing)" });
         }
 
-        // Configuración de Nodemailer con Gmail o SMTP personalizado
         const transporter = nodemailer.createTransport({
             service: "Gmail",
             auth: {
@@ -26,7 +25,7 @@ module.exports = async (req, res) => {
                 pass: process.env.EMAIL_PASS,
             },
             tls: {
-                rejectUnauthorized: false, // Evita problemas con certificados SSL
+                rejectUnauthorized: false, // Evita errores de certificados
             },
         });
 
@@ -45,11 +44,11 @@ module.exports = async (req, res) => {
         };
 
         await transporter.sendMail(mailOptions);
-        console.log("Correo enviado correctamente");
+        console.log("✅ Correo enviado correctamente");
         return res.status(200).json({ message: "Correo enviado con éxito" });
 
     } catch (error) {
-        console.error("Error al enviar correo:", error);
-        return res.status(500).json({ error: "Error al enviar el correo" });
+        console.error("❌ Error al enviar correo:", error);
+        return res.status(500).json({ error: "Error en el servidor" });
     }
 };
