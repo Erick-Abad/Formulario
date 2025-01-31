@@ -1,17 +1,22 @@
 document.addEventListener("DOMContentLoaded", function () {
     const formulario = document.getElementById("inscripcionForm");
 
-    formulario.addEventListener("submit", async function (event) {
+    formulario?.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        const nombre = document.getElementById("nombre").value;
-        const apellidos = document.getElementById("apellidos").value;
-        const pais = document.getElementById("pais").value;
-        const otroPais = document.getElementById("otroPais").value;
-        const ciudad = document.getElementById("ciudad").value;
-        const otraCiudad = document.getElementById("otraCiudad").value;
-        const direccion = document.getElementById("direccion").value;
-        const telefono = document.getElementById("telefono").value;
+        const nombre = document.getElementById("nombre").value.trim();
+        const apellidos = document.getElementById("apellidos").value.trim();
+        const pais = document.getElementById("pais").value.trim();
+        const otroPais = document.getElementById("otroPais")?.value.trim();
+        const ciudad = document.getElementById("ciudad").value.trim();
+        const otraCiudad = document.getElementById("otraCiudad")?.value.trim();
+        const direccion = document.getElementById("direccion").value.trim();
+        const telefono = document.getElementById("telefono").value.trim();
+
+        if (!nombre || !apellidos || !pais || !ciudad || !direccion || !telefono) {
+            alert("Por favor, completa todos los campos obligatorios.");
+            return;
+        }
 
         const datos = {
             nombre,
@@ -19,23 +24,25 @@ document.addEventListener("DOMContentLoaded", function () {
             pais: pais === "Otro" ? otroPais : pais,
             ciudad: ciudad === "Otro" ? otraCiudad : ciudad,
             direccion,
-            telefono
+            telefono,
         };
 
         try {
             const respuesta = await fetch("/api/send-email", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify(datos),
             });
 
             const resultado = await respuesta.json();
 
             if (respuesta.ok) {
-                alert("✅ Inscripción enviada con éxito.");
+                alert("Inscripción enviada con éxito.");
                 formulario.reset();
             } else {
-                alert("❌ Error al enviar la inscripción. Inténtalo de nuevo.");
+                alert("Error al enviar la inscripción. Inténtalo de nuevo.");
             }
         } catch (error) {
             console.error("Error en la solicitud:", error);
@@ -43,13 +50,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    document.getElementById("pais").addEventListener("change", function () {
+    // Lógica para actualizar las ciudades según el país seleccionado
+    document.getElementById("pais")?.addEventListener("change", function () {
         const otroPaisInput = document.getElementById("otroPais");
         otroPaisInput.style.display = this.value === "Otro" ? "block" : "none";
         actualizarCiudades();
     });
 
-    document.getElementById("ciudad").addEventListener("change", function () {
+    document.getElementById("ciudad")?.addEventListener("change", function () {
         const otraCiudadInput = document.getElementById("otraCiudad");
         otraCiudadInput.style.display = this.value === "Otro" ? "block" : "none";
     });
@@ -68,8 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "Ecuador": ["Quito", "Guayaquil", "Cuenca", "Manta", "Ambato"],
             "México": ["CDMX", "Guadalajara", "Monterrey", "Cancún", "Puebla"],
             "Perú": ["Lima", "Arequipa", "Trujillo", "Cusco"],
-            "Uruguay": ["Montevideo", "Punta del Este", "Salto"],
-            "Venezuela": ["Caracas", "Maracaibo", "Valencia", "Barquisimeto"]
+            "Venezuela": ["Caracas", "Maracaibo", "Valencia", "Barquisimeto"],
         };
 
         if (ciudadesPorPais[paisSeleccionado]) {
