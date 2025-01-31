@@ -2,18 +2,22 @@ const nodemailer = require("nodemailer");
 
 module.exports = async (req, res) => {
     try {
+        console.log("📩 Iniciando envío de correo...");
+
         if (req.method !== "POST") {
             return res.status(405).json({ error: "Método no permitido" });
         }
 
         const { nombre, apellidos, pais, ciudad, direccion, telefono } = req.body;
+        console.log("📩 Datos recibidos:", req.body);
 
         if (!nombre || !apellidos || !pais || !ciudad || !direccion || !telefono) {
+            console.error("❌ Faltan datos en el formulario.");
             return res.status(400).json({ error: "Todos los campos son obligatorios" });
         }
 
         if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.RECEIVER_EMAIL) {
-            console.error("❌ Error: Variables de entorno faltantes en Vercel.");
+            console.error("❌ Error: Variables de entorno faltantes.");
             return res.status(500).json({ error: "Error en el servidor (ENV Missing)" });
         }
 
@@ -51,3 +55,4 @@ module.exports = async (req, res) => {
         return res.status(500).json({ error: "Error en el servidor" });
     }
 };
+
