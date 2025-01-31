@@ -3,26 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cursos Disponibles - Centro Integral</title>
+    <title>Cursos Disponibles - Fundación Internacional Transformados</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <h1>FUNDACIÓN INTERNACIONAL TRANSFORMADOS</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Buscar curso..." onkeyup="buscarCurso()">
+        </div>
+    </header>
+
     <div class="container">
-        <h1>Cursos Disponibles</h1>
-        <ul id="course-list">
-            <li>
-                <a href="contabilidad.html" class="course-link">Taller Contable y Administrativo para Emprendedores</a>
-            </li>
-            <li>
-                <a href="cosmetologia.html" class="course-link">Curso Profesional de Cosmetología</a>
-            </li>
-            <li>
-                <a href="excel.html" class="course-link">Curso de Excel</a>
-            </li>
-            <li>
-                <a href="finanzas.html" class="course-link">Educación Financiera para Emprendedores</a>
-            </li>
-        </ul>
+        <h2>Cursos Disponibles</h2>
+        <div id="course-list">
+            <a href="contabilidad.html" class="course-link">Taller Contable y Administrativo para Emprendedores</a>
+            <a href="cosmetologia.html" class="course-link">Curso Profesional de Cosmetología</a>
+            <a href="excel.html" class="course-link">Curso de Excel</a>
+            <a href="finanzas.html" class="course-link">Educación Financiera para Emprendedores</a>
+        </div>
     </div>
+
+    <script>
+        function buscarCurso() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cursos = document.getElementsByClassName('course-link');
+
+            for (let curso of cursos) {
+                let texto = curso.innerText.toLowerCase();
+                if (texto.includes(input)) {
+                    curso.style.display = "block";
+                } else {
+                    curso.style.display = "none";
+                }
+            }
+        }
+    </script>
 </body>
 </html>

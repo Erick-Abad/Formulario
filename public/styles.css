@@ -5,21 +5,51 @@ body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(to right, #0a192f, #00ff87);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     height: 100vh;
     margin: 0;
     color: #fff;
     padding: 20px;
+    box-sizing: border-box;
 }
 
+/* Barra de búsqueda */
+.search-container {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: flex-start;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+#searchInput {
+    width: 250px;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #00ff87;
+    font-size: 16px;
+    background: #0a192f;
+    color: #fff;
+    text-align: center;
+    outline: none;
+    transition: 0.3s ease-in-out;
+}
+
+#searchInput:focus {
+    border-color: #00d674;
+}
+
+/* Contenedor principal */
 .container {
     background: rgba(10, 25, 47, 0.95);
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 255, 135, 0.3);
     text-align: center;
-    max-width: 400px;
+    max-width: 500px;
     width: 100%;
     border: 1px solid #00ff87;
     box-sizing: border-box;
@@ -34,7 +64,39 @@ h1, h2 {
     text-transform: uppercase;
 }
 
-/* Estilo para botones */
+/* Estilo para los botones de los cursos */
+#course-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.course-link {
+    display: block;
+    text-align: center;
+    background: #00ff87;
+    color: #0a192f;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.course-link:hover {
+    background: #00d674;
+}
+
+/* Eliminar los puntos de la lista */
+#course-list li {
+    list-style-type: none;
+}
+
+/* Botón de inscripción */
 .btn {
     background: #00ff87;
     color: #0a192f;
@@ -53,30 +115,7 @@ h1, h2 {
     background: #00d674;
 }
 
-/* Estilo para botones de enlaces como el del curso de Excel */
-.course-link {
-    display: inline-block;
-    text-align: center;
-    background: #00ff87;
-    color: #0a192f;
-    border: none;
-    padding: 15px;
-    cursor: pointer;
-    border-radius: 25px;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: 0.3s;
-    margin-top: 15px;
-    box-sizing: border-box;
-    width: 100%;
-}
-
-.course-link:hover {
-    background: #00d674;
-}
-
-/* Estilo para el botón de WhatsApp */
+/* Botón de WhatsApp */
 .whatsapp-link {
     display: block;
     text-align: center;
@@ -117,10 +156,98 @@ input {
     text-align: center;
     transition: 0.3s ease-in-out;
 }
+/* Estilos para los enlaces de cursos */
+.course-link {
+    display: block;
+    text-align: center;
+    background: #00ff87;
+    color: #0a192f;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+    width: 100%;
+    max-width: 400px; /* Se mantiene un tamaño controlado */
+    margin: 10px auto; /* Centrado y con margen */
+}
+
+.course-link:hover {
+    background: #00d674;
+    color: #0a192f;
+    text-decoration: none;
+}
+/* Input y Select con estilo */
+.input-group select, .input-group input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #00ff87;
+    border-radius: 25px;
+    font-size: 16px;
+    background: #0a192f;
+    color: #fff;
+    text-align: center;
+    transition: 0.3s ease-in-out;
+}
+
+.input-group select:focus, .input-group input:focus {
+    border-color: #00d674;
+}
+
+/* Ajuste responsivo */
+@media (max-width: 768px) {
+    .input-group select, .input-group input {
+        font-size: 14px;
+        padding: 12px;
+    }
+}
+
 
 /* Responsividad */
 @media (max-width: 768px) {
     .container {
         width: 90%;
     }
+
+    .search-container {
+        width: 100%;
+        justify-content: center;
+        left: 0;
+        top: 10px;
+    }
+
+    #searchInput {
+        width: 80%;
+    }
+
+    /* Asegurar que los botones de los cursos sean adaptables */
+    .course-link {
+        font-size: 16px;
+        padding: 12px;
+        width: 90%;
+    }
+}
+
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    .search-container {
+        width: 100%;
+        justify-content: center;
+        left: 0;
+        top: 10px;
+    }
+
+    #searchInput {
+        width: 80%;
+    }
+
+
 }

@@ -1,36 +1,99 @@
-document.getElementById('inscripcionForm')?.addEventListener('submit', function (event) {
-    event.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
+    const formulario = document.getElementById("inscripcionForm");
 
-    const nombre = document.getElementById('nombre').value.trim();
-    const correo = document.getElementById('correo').value.trim();
+    formulario.addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-    if (nombre === '' || correo === '') {
-        alert('Por favor, completa todos los campos.');
-        return;
-    }
+        const nombre = document.getElementById("nombre").value;
+        const apellidos = document.getElementById("apellidos").value;
+        const pais = document.getElementById("pais").value;
+        const otroPais = document.getElementById("otroPais").value;
+        const ciudad = document.getElementById("ciudad").value;
+        const otraCiudad = document.getElementById("otraCiudad").value;
+        const direccion = document.getElementById("direccion").value;
+        const telefono = document.getElementById("telefono").value;
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(correo)) {
-        alert('Por favor, introduce un correo electrónico válido.');
-        return;
-    }
+        const datos = {
+            nombre,
+            apellidos,
+            pais: pais === "Otro" ? otroPais : pais,
+            ciudad: ciudad === "Otro" ? otraCiudad : ciudad,
+            direccion,
+            telefono
+        };
 
-    fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, correo })
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                alert('¡Inscripción exitosa! Revisa tu correo.');
-                document.getElementById('inscripcionForm').reset();
+        try {
+            const respuesta = await fetch("/api/send-email", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(datos),
+            });
+
+            const resultado = await respuesta.json();
+
+            if (respuesta.ok) {
+                alert("Inscripción enviada con éxito.");
+                formulario.reset();
             } else {
-                alert('Hubo un problema, intenta nuevamente.');
+                alert("Error al enviar la inscripción. Inténtalo de nuevo.");
             }
-        })
-        .catch(error => {
-            alert('Error de conexión. Inténtalo más tarde.');
-            console.error('Error:', error);
-        });
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+            alert("Hubo un problema al enviar la inscripción.");
+        }
+    });
+
+    document.getElementById("pais").addEventListener("change", function () {
+        const otroPaisInput = document.getElementById("otroPais");
+        otroPaisInput.style.display = this.value === "Otro" ? "block" : "none";
+
+        actualizarCiudades();
+    });
+
+    document.getElementById("ciudad").addEventListener("change", function () {
+        const otraCiudadInput = document.getElementById("otraCiudad");
+        otraCiudadInput.style.display = this.value === "Otro" ? "block" : "none";
+    });
+
+    function actualizarCiudades() {
+        const paisSeleccionado = document.getElementById("pais").value;
+        const ciudadSelect = document.getElementById("ciudad");
+        ciudadSelect.innerHTML = '<option value="" disabled selected>Selecciona tu ciudad</option>';
+
+        const ciudadesPorPais = {
+            "Argentina": ["Buenos Aires", "Córdoba", "Rosario", "Mendoza", "La Plata"],
+            "Bolivia": ["La Paz", "Cochabamba", "Santa Cruz", "Sucre"],
+            "Brasil": ["São Paulo", "Río de Janeiro", "Brasilia", "Belo Horizonte"],
+            "Chile": ["Santiago", "Valparaíso", "Concepción", "Antofagasta"],
+            "Colombia": ["Bogotá", "Medellín", "Cali", "Barranquilla", "Cartagena"],
+            "Costa Rica": ["San José", "Alajuela", "Heredia", "Cartago"],
+            "Cuba": ["La Habana", "Santiago de Cuba", "Camagüey", "Holguín"],
+            "Ecuador": ["Quito", "Guayaquil", "Cuenca", "Manta", "Ambato"],
+            "El Salvador": ["San Salvador", "Santa Ana", "San Miguel"],
+            "Guatemala": ["Ciudad de Guatemala", "Quetzaltenango", "Escuintla", "Antigua"],
+            "Honduras": ["Tegucigalpa", "San Pedro Sula", "Choloma", "La Ceiba"],
+            "México": ["CDMX", "Guadalajara", "Monterrey", "Cancún", "Puebla"],
+            "Nicaragua": ["Managua", "León", "Masaya", "Granada"],
+            "Panamá": ["Ciudad de Panamá", "Colón", "David", "Santiago"],
+            "Paraguay": ["Asunción", "Ciudad del Este", "Encarnación"],
+            "Perú": ["Lima", "Arequipa", "Trujillo", "Cusco"],
+            "República Dominicana": ["Santo Domingo", "Santiago", "La Romana", "San Pedro"],
+            "Uruguay": ["Montevideo", "Punta del Este", "Salto", "Maldonado"],
+            "Venezuela": ["Caracas", "Maracaibo", "Valencia", "Barquisimeto"]
+        };
+
+        if (ciudadesPorPais[paisSeleccionado]) {
+            ciudadesPorPais[paisSeleccionado].forEach(ciudad => {
+                let option = document.createElement("option");
+                option.value = ciudad;
+                option.textContent = ciudad;
+                ciudadSelect.appendChild(option);
+            });
+            ciudadSelect.innerHTML += '<option value="Otro">Otro</option>';
+        } else {
+            ciudadSelect.innerHTML += '<option value="Otro">Otro</option>';
+        }
+    }
 });
