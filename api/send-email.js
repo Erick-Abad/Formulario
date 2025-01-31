@@ -63,7 +63,7 @@ module.exports = async (req, res) => {
 
         await transporter.sendMail(mailOptions);
         console.log("✅ Correo enviado correctamente");
-        return res.status(200).json({ message: "Correo enviado con éxito" });
+        return res.status(200).json({ message: "Inscripción enviada con éxito" });
 
     } catch (error) {
         console.error("❌ Error en el servidor:", error);
